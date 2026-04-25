@@ -1,0 +1,36 @@
+# Sky Icon Travel & Tourism - Robots.txt
+# سكاي آيكون للسفريات والسياحة
+# v5.3.5 - Production
+
+# السماح لجميع محركات البحث
+User-agent: *
+Allow: /
+
+# عدم فهرسة ملفات التوثيق
+Disallow: /*.md$
+Disallow: /*.json$
+Disallow: /*.log$
+Disallow: /*.bak$
+
+# عدم فهرسة مجلدات معينة
+Disallow: /js/
+Disallow: /css/
+
+# السماح بفهرسة الصفحة الرئيسية
+Allow: /index.html
+Allow: /
+
+# Sitemap
+Sitemap: https://yourdomain.com/sitemap.xml
+
+# أوقات الزحف المفضلة
+Crawl-delay: 10
+
+# محركات البحث الخاصة
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 5
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 5

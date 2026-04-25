@@ -1,0 +1,93 @@
+# ========================================
+# .gitignore for Sky Icon Accounting System
+# ========================================
+
+# Node modules (if any)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build files
+dist/
+build/
+.cache/
+
+# Logs
+logs/
+*.log
+
+# Database files (if using local DB)
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# OS generated files
+Thumbs.db
+Desktop.ini
+
+# Backup files
+*.bak
+*.backup
+*_backup.*
+backup/
+
+# Test files
+coverage/
+.nyc_output/
+
+# Package manager lock files (optional - comment out if you want to include them)
+# package-lock.json
+# yarn.lock
+
+# Local configuration
+config.local.js
+settings.local.js
+
+# User data (LocalStorage data should not be committed)
+# Note: Since this is a client-side app using LocalStorage,
+# actual data is stored in the browser, not in files.
+# But if you export data to files, add those patterns here:
+exports/
+data_exports/
+*.json.bak
+
+# Documentation drafts
+docs/drafts/
+*.draft.md
+
+# System files
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# ========================================
+# GitHub Pages specific (if deploying there)
+# ========================================
+# Uncomment if you use GitHub Pages and want to ignore certain deployment files
+# .github/
+# CNAME
+
+# ========================================
+# END OF .gitignore
+# ========================================

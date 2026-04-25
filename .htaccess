@@ -1,0 +1,187 @@
+# سكاي آيكون - إعدادات Apache
+# Sky Icon Accounting System
+# v5.3.5 - Production Ready for Hostinger VPS
+
+# ==========================================
+# الأمان - HTTPS والتوجيه
+# ==========================================
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    
+    # إجبار استخدام HTTPS
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    
+    # إعادة توجيه www إلى non-www
+    RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+    RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+    
+    # معالجة Single Page Application
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.html [L,QSA]
+</IfModule>
+
+# ==========================================
+# الضغط والأداء
+# ==========================================
+
+# تفعيل ضغط GZIP
+<IfModule mod_deflate.c>
+    # ضغط HTML, CSS, JavaScript, Text, XML
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/xml application/xhtml+xml application/rss+xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# ==========================================
+# التخزين المؤقت (Cache)
+# ==========================================
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # HTML - بدون تخزين مؤقت
+    ExpiresByType text/html "access plus 0 seconds"
+    
+    # CSS و JavaScript - شهر واحد
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    
+    # الصور - سنة واحدة
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+    
+    # الخطوط - سنة واحدة
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/otf "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    
+    # الفيديو والصوت
+    ExpiresByType video/mp4 "access plus 1 year"
+    ExpiresByType audio/mpeg "access plus 1 year"
+    
+    # PDF وملفات أخرى
+    ExpiresByType application/pdf "access plus 1 month"
+    ExpiresByType application/zip "access plus 1 month"
+</IfModule>
+
+# ==========================================
+# الأمان
+# ==========================================
+
+# منع عرض قائمة الملفات
+Options -Indexes
+
+# حماية الملفات الحساسة
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# حماية ملفات التكوين والتوثيق
+<FilesMatch "\.(md|json|log|bak|config|env)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# منع الوصول إلى ملفات Git
+<FilesMatch "^\.git">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# تعطيل عرض معلومات الخادم
+ServerSignature Off
+
+# رؤوس الأمان
+<IfModule mod_headers.c>
+    # منع التضمين في إطار (Clickjacking)
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Content Security Policy - مخصص للنظام
+    Header always set Content-Security-Policy "default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com data:; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'self';"
+    
+    # HSTS - إجبار HTTPS لمدة سنة
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    
+    # Permissions Policy
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# ==========================================
+# صفحات الأخطاء المخصصة
+# ==========================================
+
+ErrorDocument 404 /index.html
+ErrorDocument 403 /index.html
+ErrorDocument 500 /index.html
+
+# ==========================================
+# أنواع MIME
+# ==========================================
+
+<IfModule mod_mime.c>
+    # JavaScript
+    AddType application/javascript js
+    AddType application/json json
+    
+    # الخطوط
+    AddType font/ttf ttf
+    AddType font/otf otf
+    AddType font/woff woff
+    AddType font/woff2 woff2
+    
+    # SVG
+    AddType image/svg+xml svg svgz
+    AddEncoding gzip svgz
+    
+    # Manifest
+    AddType application/manifest+json webmanifest
+</IfModule>
+
+# ==========================================
+# UTF-8 Encoding
+# ==========================================
+
+AddDefaultCharset UTF-8
+<IfModule mod_mime.c>
+    AddCharset UTF-8 .html .css .js .xml .json .rss .atom
+</IfModule>
+
+# ==========================================
+# تحسينات إضافية
+# ==========================================
+
+# تعطيل ETags
+<IfModule mod_headers.c>
+    Header unset ETag
+</IfModule>
+FileETag None
+
+# تحسين Keep-Alive
+<IfModule mod_headers.c>
+    Header set Connection keep-alive
+</IfModule>
+
+# تحديد الحد الأقصى لوقت التنفيذ
+<IfModule mod_php.c>
+    php_value max_execution_time 300
+    php_value max_input_time 300
+    php_value memory_limit 256M
+</IfModule>
